@@ -1,6 +1,6 @@
 \documentclass[12pt]{article}
- 
-\usepackage[margin=1in]{geometry} 
+
+\usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amsthm,amssymb}
 \usepackage[section]{placeins}
 \usepackage{graphicx}
@@ -68,7 +68,7 @@ morekeywords={}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
 \newenvironment{claim}[2][Claim]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
- 
+
 \title{Unsupervised Learning of Language Growth on Twitter}
 \author{Arun Shanmuganathan}
 \date{Supervisors: Dr. Scott Hale (OII) and Dr. James Martin (Stats)}
@@ -77,26 +77,26 @@ morekeywords={}
 \begin{titlepage}
     \begin{center}
         \vspace*{0.5cm}
-        
+
         \Huge
         \textbf{Unsupervised Learning of Language Growth on Twitter}
         \vspace{0.5cm}
-        
+
 \LARGE Arun Shanmuganathan\\
         Jesus College\\
 
         \vspace{1.2cm}
-        \includegraphics[width=0.5\textwidth]{logo.png}        
+        \includegraphics[width=0.5\textwidth]{images/logo.png}
         \vspace{0.8cm}
-        
+
 \normalsize A dissertation submitted in partial fulfilment of the requirements for the degree of \\ Master of Science in Applied Statistics\\
 
 
-        
-        \vspace{0.8cm}
-        
 
-        
+        \vspace{0.8cm}
+
+
+
         \large
         Department of Statistics\\
         University of Oxford\\
@@ -120,7 +120,7 @@ It comes to 3 key conclusions:
 \item English is a poor proxy for understanding language growth but better for larger languages than smaller ones.
 \end{enumerate}
  \newpage
- 
+
 \begin{center}
 \vspace*{2cm}
 \textbf{\LARGE Acknowledgements}
@@ -131,7 +131,7 @@ It comes to 3 key conclusions:
  \\\\
  Finally, to my parents who have been there through everything in my life and education - thank you so much.
  \newpage
- 
+
 \tableofcontents
 
 \newpage
@@ -139,21 +139,21 @@ It comes to 3 key conclusions:
 \section{Introduction}
 
 \subsection{Motivation and Objectives}
-Twitter is a social network platform launched in 2006 that allows individuals to publish 140 character posts known as 'tweets' to their direct network and a wider audience. It has since been built into a community of over 300 million active users from around the world. Headquartered in San Francisco, initial users used it almost exclusively in English but it has now grown so that the user interface of the platform is available in 42 languages and less than 50\% \cite{Halemain} of daily posts are in English now. 
+Twitter is a social network platform launched in 2006 that allows individuals to publish 140 character posts known as 'tweets' to their direct network and a wider audience. It has since been built into a community of over 300 million active users from around the world. Headquartered in San Francisco, initial users used it almost exclusively in English but it has now grown so that the user interface of the platform is available in 42 languages and less than 50\% \cite{Halemain} of daily posts are in English now.
 \\\\
-It is common for communities using a single language to develop \cite{Halemain} but there is a process for a language to go from being non-existent on Twitter to being used by a thriving community . Given that bilinguals have been shown to play crucial roles in bridging these communities \cite{Halemain}, we speculate that this process involves bilinguals choosing initially to use a more popular language and then switching to using the less-common language and over time, more  users choosing to directly use their native language. 
+It is common for communities using a single language to develop \cite{Halemain} but there is a process for a language to go from being non-existent on Twitter to being used by a thriving community . Given that bilinguals have been shown to play crucial roles in bridging these communities \cite{Halemain}, we speculate that this process involves bilinguals choosing initially to use a more popular language and then switching to using the less-common language and over time, more  users choosing to directly use their native language.
 \\\\
 The main aim of this study is to model this growth progression of languages on Twitter using a variety of unsupervised machine learning techniques to test three key hypotheses:
 \begin{itemize}
 \item Short-term surges can have long-term impacts on language growth.
 \item There are similarities in growth patterns among languages that have similar levels of bilingual use (e.g. similarities between Japanese and Korean or between Filipino and Italian)
-\item English is often a poor proxy to use when trying to understand community growth on Twitter 
+\item English is often a poor proxy to use when trying to understand community growth on Twitter
 \end{itemize}
 \subsection{Dissertation Structure}
 The dissertation is divided into 6 main sections. Section 2 looks at the previous literature summarising the main conclusions and seeing how they lead to the questions that we ask in this study. Section 3 explains what data we have to work with, how we work with it and some problems. Section 4 gives a high level overview of the data through a number of exploratory methods. Section 6 attempts to cluster the data for specific languages including both K-means \& Agglomerative Hierarchical Clustering. Section 5 then attempts to model the data using a hidden Markov model with the Baum-Welch Algorithm. Section 7 then explicitly aims to answer our key hypotheses.
 \newpage
 \section{Relevant Past Work}
- Research interest in Twitter Language Communities has been trending over the fast few years \cite{Delia, Eleta, Garcia, geographies, Goncalves, Gonzalez, Graham, Hecht, Kim, Kwak, Poblete} but only recently has there been research investigating the differences between different languages \cite{Halemain, Hong, Nguyen2}. These recent studies have confirmed the amount of language-based division on Twitter. The connectivity of these languages is looked at further as a social network attempting to understand the interplay between languages and how communities connect \cite{Halemain}. One of the key conclusions that underpin this research is the importance of bilinguals in bridging these communities. In this study, it was found that multilingual users played a crucial role in bridging communities with the vast majority of users only retweeting in the same languages as their own. With the aim of understanding this better, we look to what the growth trends have been and how they may have caused these relationships between language communities. Because languages need to grow from non-existence to relevance over an extended period of time, we suspect that in their initial growth, these bilingual users have an even more important role to play in the development of these languages over time. 
+ Research interest in Twitter Language Communities has been trending over the fast few years \cite{Delia, Eleta, Garcia, geographies, Goncalves, Gonzalez, Graham, Hecht, Kim, Kwak, Poblete} but only recently has there been research investigating the differences between different languages \cite{Halemain, Hong, Nguyen2}. These recent studies have confirmed the amount of language-based division on Twitter. The connectivity of these languages is looked at further as a social network attempting to understand the interplay between languages and how communities connect \cite{Halemain}. One of the key conclusions that underpin this research is the importance of bilinguals in bridging these communities. In this study, it was found that multilingual users played a crucial role in bridging communities with the vast majority of users only retweeting in the same languages as their own. With the aim of understanding this better, we look to what the growth trends have been and how they may have caused these relationships between language communities. Because languages need to grow from non-existence to relevance over an extended period of time, we suspect that in their initial growth, these bilingual users have an even more important role to play in the development of these languages over time.
 \\\\ The research also shows that language users in some communities have operated similarly in terms of the levels of crossover to other languages as well as commonality in hashtags, URLs, connections \cite{Hong} and bilingual use. In particular, it was found that there was an Asian-language group (Japanese, Korean and Thai) that had relatively closely connected communities (more crossover than expected given their relative lack of multilingual users) as well as a similarity in the way that Italian and Filipino users were very willing to cross over and use other languages. We extend this further to see which languages are similar in terms of their growth patterns and moreover, which sets of languages differ substantially in their growth from other languages. We specifically look at this in trying to find whether there are any noticeable similarities to the previous research between pairs of communities.\\\\
 The vast majority of studies in the past have only looked at English language conversations on Twitter \cite{HechtEnglish} and it has recently been shown that there are some reasons, regarding the way that different language communities use Twitter, that we should be skeptical of this approach and maybe consider alternatives \cite{Garcia, Halemain, Hong}. We look at this in greater depth directly questioning this assumption with the goal of also finding which languages English does act as a good proxy for in the realm of language growth.\\\\
 Despite many studies being conducted using Twitter language data, this is the first, to our knowledge, that looks into the change over time of these language communities. Research has been done on how conversations and political movements grow on Twitter \cite{HMM, Gonzalez} and this study uses some of the techniques used as a basis in terms of the underlying models, particularly looking at growth rates and the relevance of friend-follower relationships \cite{Gonzalez}, which have previously shown to have relevance in the growth of movements concluding that growth of movements should be seen as macro diffusion processes rather than individual binary decision making. We use this approach in our study looking at a large collection of users and changes of the macro-group rather than looking at individual bilingual users. \\\\
@@ -225,7 +225,7 @@ We already note some interesting features related to previous work:
 We first look at the 6 most common languages over time and see their growth in post rate over time. Note that we can only look at proportional growth (i.e. how the relative proportion of each language changes over time) because Twitter has changed the percentage of posts it includes within the sample 'Spritzer' stream over the years and these changes are not well documented. The stream provides a small random sample, which used to be approximately 1\% of all posts but this figure is no longer included in the documentation. This gives us Figure 1 below:
 \FloatBarrier
 \begin{figure}[hbtp]\centering
-\includegraphics[width=\textwidth,clip]{languageproportionplot.png}
+\includegraphics[width=\textwidth,clip]{images/languageproportionplot.png}
 \end{figure}
 \FloatBarrier
 This explains more clearly the earlier finding of the growth of Arabic and the decline of English and Portuguese while suggesting that the growth of Spanish may have happened before this. The decline of Malaysian/Indonesian is also made apparent. It also highlights some of the problems with the data in that there is no data in the periods mentioned earlier and so has just interpolated between points. The presence of spikes is what we hope to look for the effect of when we define 'surges' and see if this results in long-term impact.
@@ -233,10 +233,10 @@ This explains more clearly the earlier finding of the growth of Arabic and the d
 We want to look further and see the relationships between languages and whether some languages grow at the expense of others or grow together. To that extent, we create a heat map on the correlation matrix between daily post proportions of languages.
 \FloatBarrier
 \begin{figure}[hbtp]\centering
-\includegraphics[width=0.9\textwidth,clip]{correlation.png}
+\includegraphics[width=0.9\textwidth,clip]{images/correlation.png}
 \end{figure}
 \FloatBarrier
-By simply putting them such that all the languages positively correlated with English are on the left and all the ones negatively correlated are on the right, we end up with the heat map that very clearly shows a division between the sets of languages where they are correlated to others in the same group and negatively correlated to the others with few exceptions. This isn't very surprising given that we're looking at proportions and so growth is measured zero-sum i.e. growth of somethings have to come at the expense of others but it's surprising how well classified these groups are. Future work should explore in more detail some of the exceptional pairs e.g. (Italian-Spanish, Korean-Russian) as well as some of the more extreme correlations (Thai-Japanese, Dutch-Arabic). 
+By simply putting them such that all the languages positively correlated with English are on the left and all the ones negatively correlated are on the right, we end up with the heat map that very clearly shows a division between the sets of languages where they are correlated to others in the same group and negatively correlated to the others with few exceptions. This isn't very surprising given that we're looking at proportions and so growth is measured zero-sum i.e. growth of somethings have to come at the expense of others but it's surprising how well classified these groups are. Future work should explore in more detail some of the exceptional pairs e.g. (Italian-Spanish, Korean-Russian) as well as some of the more extreme correlations (Thai-Japanese, Dutch-Arabic).
 \subsection{Measurements of Growth}
 From this, we notice trends in growth and some relationships between languages but in order to have a more quantitative study using unsupervised techniques we need clear measures of growth. \\\\
 Currently, our data consists of points $x_{i,j,t,}$ for $j=1\ldots J$, the languages, $t=0 \ldots T$, time (in days) and $i=1,2,3$ where $i=1$ refers to the number of posts, $i=2$ refers to the number of followers and $i=3$ refers to the number of friends. In order to account for the different amounts of data in each given day, we instead use the proportions: $$p_{i,j,t} = \frac{x_{i,j,t}}{\sum_{j=1}^{J} x_{i,j,t}} \forall i,j,t$$ such that $\sum_{j=1}^{J} p_{i,j,t} = 1 \forall i,t$. The reason for normalising the post rate is clear and the reason for normalising the other two values is to ensure that we're measuring like-for-like. If we were to not normalise, we would still run into the problem that we're not sure how much these are affected by surges and declines at any given time but normalising ensures this. \\\\
@@ -244,7 +244,7 @@ When we measure growth, we normally look at relative gains from a previous basel
 $$ q_{i,j,t} = \frac{p_{i,j,t} - p_{i,j,t-1}}{p_{i,j,t-1}} \forall i,j,t$$ for $i=1,2,3, j = 1 \ldots J$ and $T=1,\ldots T$. We could have taken the gains relative to some moving average in order to smooth out the results but this approach more clearly reflects how each daily movement is dependent on the previous day's movement and the results are already fairly smooth. We could also have adjusted for weekends but there was no noticeable effect and to do so would have involved looking at different time zones and different weekends around the world (e.g. Thursday and Friday in some parts of the Muslim world and Friday and Saturday in others \cite{Weekends}).
 \FloatBarrier
 \begin{figure}[hbtp]\centering
-\includegraphics[width=\textwidth,clip]{SpanishProportionGrowth.png}
+\includegraphics[width=\textwidth,clip]{images/SpanishProportionGrowth.png}
 \end{figure}
 \FloatBarrier
 \newpage
@@ -276,7 +276,7 @@ We initially try out a simple k-means clustering of points, where each point has
 As an example, we see the Arabic language data shown below as a histogram projected where we only look at a projection of the labels onto the activity and reach growth dimensions.
 \FloatBarrier
 \begin{figure}[hbtp]\centering
-\includegraphics[width=0.78\textwidth,clip]{ArabicKMeans.png}
+\includegraphics[width=0.78\textwidth,clip]{images/ArabicKMeans.png}
 \end{figure}
 \FloatBarrier
 We can then turn this into an 'observed transition matrix' by looking at the frequency of switches between states as well as into a general probability distribution showing how often any given state occurs. These are shown below:
@@ -305,7 +305,7 @@ Surge     &  0.286 &  0.2 &  0.229 &  0.286\\
 \end{tabular}
 \end{center}
 \vspace{0.5cm}
-The transition matrix is shown such that a value on the $i$'th row and $j$'th row represents the probability of switching to stage $j$ given the previous day was on stage $i$ and as such the rows sum to 1. We notice some clear trends that seem fairly intuitive: the diagonals are fairly high meaning that they do stay in the same stages over consecutive days and there is a shift from surge to growth meaning that long-term impacts can occur form our surges. 
+The transition matrix is shown such that a value on the $i$'th row and $j$'th row represents the probability of switching to stage $j$ given the previous day was on stage $i$ and as such the rows sum to 1. We notice some clear trends that seem fairly intuitive: the diagonals are fairly high meaning that they do stay in the same stages over consecutive days and there is a shift from surge to growth meaning that long-term impacts can occur form our surges.
 \subsection{Agglomerative Hierarchical Clustering}
 Now, we instead use a hierarchical clustering technique. In this, we start with 1 cluster for each point with the goal of combining clusters of minimum distance apart from each other until we remain with just 4 clusters. The distance we use between points is a simple Euclidean distance using the Ward's distance linkage method which aims to minimise the within-cluster variance total of the new set of clusters. When a cluster is just a single point, it takes the variance as the Euclidean-square distance of that point. In this method, for clusters $C_0,C_1,C_2,C_3$ we aim to minimise $$\sum_k \frac{1}{\lvert C_k \rvert}\sum_{t \in C_k} (q_t - \mu_k)^2$$\\
 \FloatBarrier
@@ -332,7 +332,7 @@ Now, we instead use a hierarchical clustering technique. In this, we start with 
 We again see the Arabic language data shown below as a histogram projected where we only look at a projection of the labels onto the activity and reach growth dimensions.
 \FloatBarrier
 \begin{figure}[hbtp]\centering
-\includegraphics[width=0.72\textwidth,clip]{ArabicWardMethod.png}
+\includegraphics[width=0.72\textwidth,clip]{images/ArabicWardMethod.png}
 \end{figure}
 \FloatBarrier
 We can then again turn this into an 'observed transition matrix' by looking at the frequency of switches between states as well as into a general probability distribution showing how often any given state occurs. These are shown in the figure below:
@@ -362,25 +362,25 @@ Growth     &  0.027 &  0.181 &  0.409 &  0.382 \\
 \end{center}
 \vspace{0.5cm}
 We again notice the high diagonal and the even higher probability of switching from surge to growth and from decline to stability suggesting that this model gives higher weight to the stability and growth phases and not much chance of the decline \& surge stages.
-When comparing these two models, we find that the K-means model better defines our interpretation of the 4 clusters because the origin, lies clearly within our second cluster and almost everything to the bottom of that lies in decline whereas in the agglomerative model, the origin lies in the 3rd cluster which contradicts our idea of 'growth'. 
+When comparing these two models, we find that the K-means model better defines our interpretation of the 4 clusters because the origin, lies clearly within our second cluster and almost everything to the bottom of that lies in decline whereas in the agglomerative model, the origin lies in the 3rd cluster which contradicts our idea of 'growth'.
 \newpage
 \section{Hidden Markov Model}
 \subsection{Definition \& Assumptions}
 We now proceed to apply a Hidden Markov Model to our system. In a hidden Markov model $(X,Y)$, $X$ is a homogeneous Markov model which has $N$ different possible states. It has a starting probability $\mu$ and a transition matrix $A$ such that:
 \begin{align*}
 \mu_i &= \Prob(X_0=i)\\
-A_{i,j} &= \Prob (X_{t+1} = j \vert X_t = i)\\ 
+A_{i,j} &= \Prob (X_{t+1} = j \vert X_t = i)\\
 &= \Prob(X_{t+1} = j \vert X_0\ldots X_{t-1},X_t = i)
 \end{align*}\\
 where the second equality is known as the 'Markov Property' and defines a Markov Chain. In the Hidden Markov Model, the Markov Model is hidden and we only see our observed variables $Y$, which come from different distributions depending on the value of the corresponding hidden variable. I.e. there exist $N$ distributions $\phi_{1,\ldots N}$ such that $$ Y_t \vert X_t = n \sim \phi_n$$. \\The directional dependencies of the Hidden Markov Model are shown in the figure below.
 \FloatBarrier
 \begin{figure}[hbtp]\centering
 \caption{Hidden Markov Model}
-\includegraphics[width=\textwidth,clip]{MarkovChainExplanation.png}
+\includegraphics[width=\textwidth,clip]{images/MarkovChainExplanation.png}
 \end{figure}
 \FloatBarrier
 
-In our particular Hidden Markov Model, we have exactly 4 states that our underlying Markov chain can take - again decline, stability, growth and surge. We need to work out 3 things in our model: the starting probabilities, the transition matrix and the emission functions. 
+In our particular Hidden Markov Model, we have exactly 4 states that our underlying Markov chain can take - again decline, stability, growth and surge. We need to work out 3 things in our model: the starting probabilities, the transition matrix and the emission functions.
 \\
 The assumptions underlying the Hidden Markov Model are that:
 \begin{enumerate}
@@ -494,17 +494,17 @@ Surge &  0.051 &  0.031 &  0.125 &  0.793 \\
 \end{center}
 \vspace{0.5cm}
 This transition matrix again looks fairly intuitive with high diagonal values and a reasonably high but smaller chance of transitioning from surge to growth.
-Comparing this to the the transition matrix we found earlier, in the k-means clustering, it gives significantly greater weight in each case to the probability of staying in the same stage. This could potentially be due to the way we defined the emission distributions. However, in order to check for the issues with our adjustment, we can find the value of the sum of the diagonals after adjusting a multiplicative factor in front of our standard deviations i.e. use $0.5 \times \sigma$ or $1.5 \times \sigma$ instead of just $\sigma$ from our clustered estimates. The effect of this factor is clearly shown in our figure below. 
+Comparing this to the the transition matrix we found earlier, in the k-means clustering, it gives significantly greater weight in each case to the probability of staying in the same stage. This could potentially be due to the way we defined the emission distributions. However, in order to check for the issues with our adjustment, we can find the value of the sum of the diagonals after adjusting a multiplicative factor in front of our standard deviations i.e. use $0.5 \times \sigma$ or $1.5 \times \sigma$ instead of just $\sigma$ from our clustered estimates. The effect of this factor is clearly shown in our figure below.
 \FloatBarrier
 \begin{figure}[hbtp]\centering
-\includegraphics[width=\textwidth,clip]{MultiplicativeFactor.png}
+\includegraphics[width=\textwidth,clip]{images/MultiplicativeFactor.png}
 \end{figure}
 \FloatBarrier
 
 It clearly shows that the higher the factor, the higher the sum of the diagonal i.e. the higher the chance that it stays in a given stage from day to day. The benchmark that we're using though is the one from no training which gets a value of 2.027 which is greater than all of these values thus showing that any level of training gives us more evidence of staying in the same stage. And so, it still seems fairly sensible to stay with our initial assumption of not using a multiplicative factor. The question that we can now ask is whether this trend that training the data on our HMM causes it to prefer staying on the same stage is true more broadly for languages other than Arabic. We look at the main 14 languages mentioned earlier and plot the original sums vs the trained sums.
 \FloatBarrier
 \begin{figure}[hbtp]\centering
-\includegraphics[width=\textwidth,clip]{TrainingEffectDiagonals.png}
+\includegraphics[width=\textwidth,clip]{images/TrainingEffectDiagonals.png}
 \end{figure}
 \FloatBarrier
 
@@ -517,7 +517,7 @@ Our hypothesis was that short-term surges do lead to long-term growth in the lan
 \begin{align*}
 \phi_j = \begin{cases}
        \quad 1 &\quad j = 0\\
-       1+\sum_{k \neq j} A_{j,k}\phi_k &\quad j \neq 0 \\ 
+       1+\sum_{k \neq j} A_{j,k}\phi_k &\quad j \neq 0 \\
      \end{cases}
 \end{align*}\\
 Rewriting this as a matrix problem and solving, we get the following:\\
@@ -657,11 +657,11 @@ Gon\c calves, B. and S\'anchez, D. (2014). Crowdsourcing dialect characterizatio
 Gonz\'alez-Bail\'on, S., Borge-Holthoefer, J., and Moreno, Y. (2013). Broadcasters and hidden influentials in
 online protest diffusion, \textit{American Behavioral Scientist}, doi:10.1177/0002764213479371
 
-\bibitem{Graham} 
+\bibitem{Graham}
 Graham, M., Hale, S. A., and Gaffney, D. (2014)
 Where in the world are you? Geolocation and language identification in Twitter \textit{Professional Geographer} 66(4), pp.568-578.
 
-\bibitem{Halemain} 
+\bibitem{Halemain}
 Hale, S. A. (2014). Global Connectivity and Multilinguals in the Twitter Network, In \textit{Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, CHI 2014}, page 833–842.
 
 \bibitem{HechtEnglish}
@@ -671,8 +671,8 @@ Hecht, B. and Gergle, D. (2010). The Tower of Babel Meets Web 2.0: User-Generate
 Hecht, B., Hong, L., Suh, B., and Chi, E. H. (2011).
 Tweets from Justin Bieber's heart: The dynamics of the location field in user profiles, In \textit{Proceedings of the 2011 annual conference on Human factors in computing systems, CHI 2011}, page 237–246.
 
- 
-\bibitem{Hong} 
+
+\bibitem{Hong}
 Hong, L., Convertino, G., and Chi, E. (2011).
 Language matters in Twitter: A large scale study, \textit{International AAAI Conference on Weblogs and Social Media}, page 518–521.
 
@@ -723,9 +723,7 @@ Zeng, J. Duan, J. and Wu, C. (2010). A new distance measure for hidden Markov mo
 \end{document}
 %\section{References}
 %\begin{enumerate}
-%\item Hale, S. A. (2014). Global Connectivity and Multilinguals in the Twitter Network. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, CHI '14, page 833–842, New York. ACM. 
+%\item Hale, S. A. (2014). Global Connectivity and Multilinguals in the Twitter Network. In Proceedings of the SIGCHI Conference on Human Factors in Computing Systems, CHI '14, page 833–842, New York. ACM.
 %\item Computer Language Detection Kit - https://github.com/CLD2Owners/cld2
 
 %\end{enumerate}
-
-
